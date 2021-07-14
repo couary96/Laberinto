@@ -43,7 +43,11 @@ export class LaberintoComponent implements OnInit {
     this.roads.clear();
     this.matrizForm.get('roadExist')?.setValue(true);
     for (let index = 0; index < Math.pow(length, 2); index++) {
-      this.roads.push(this.fb.control('', [Validators.required, Validators.pattern('[#]|[.]')]));
+      if(index === 0 || index === Math.pow(length, 2)-1){
+        this.roads.push(this.fb.control({value: '.', disabled: true}));
+      } else{
+        this.roads.push(this.fb.control('', [Validators.required, Validators.pattern('[#]|[.]'), Validators.maxLength(1), Validators.minLength(1)]));
+      }
     }
   }
 

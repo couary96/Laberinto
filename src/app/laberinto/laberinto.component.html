@@ -1,4 +1,5 @@
 <div class="container">
+    <mat-label>Laberinto</mat-label>
     <form [formGroup]="matrizForm">
         <div class="row">
             <mat-form-field>
@@ -21,10 +22,13 @@
                     <mat-label>Ingresar camino</mat-label>
                     <input matInput type="text" [formControlName]="index">
                     <mat-error *ngIf="getValidity(index, 'required')">
-                        Campo vacío.
+                        *Campo requerido.
                     </mat-error>
                     <mat-error *ngIf="getValidity(index, 'pattern')">
-                        Caracter invalido.
+                        *Caracter inválido.
+                    </mat-error>
+                    <mat-error *ngIf="getValidity(index, 'minlength') || getValidity(index, 'maxlength')">
+                        *Solo 1 carácter.
                     </mat-error>
                     <mat-hint>. es camino, # es pared</mat-hint>
                 </mat-form-field>
@@ -41,14 +45,14 @@
                     *Tamaño inválido.
                 </mat-error>
             </mat-form-field>
-            <button mat-raised-button type="button" color="primary" [disabled]="!matrizForm.valid" (click)="fillMatriz(matrizForm.value)">
+            <button mat-raised-button type="button" color="primary" [disabled]="!matrizForm.valid" (click)="fillMatriz(matrizForm.getRawValue())">
                 Llenar matriz
             </button>
         </div>
     </form>
     <div class="row spaceAround" *ngIf="matriz">
         <div class="col">
-            <div>Matriz</div>
+            <mat-label>Matriz</mat-label>
             <div class="row" *ngFor="let row of matriz">
                 <table>
                     <tr>
