@@ -1,0 +1,62 @@
+<div class="container">
+    <form [formGroup]="matrizForm">
+        <div class="row">
+            <mat-form-field>
+                <mat-label>Tamaño de matriz</mat-label>
+                <input matInput type="number" formControlName="length">
+                <mat-error *ngIf="matrizForm.get('length').touched && matrizForm.get('length').hasError('required')">
+                    *Campo requerido.
+                </mat-error>
+                <mat-error *ngIf="matrizForm.get('length').hasError('min')">
+                    *Tamaño inválido.
+                </mat-error>
+            </mat-form-field>
+            <button mat-raised-button type="button" color="primary" [disabled]="!matrizForm.get('length').valid || !matrizForm.get('jumps').valid" (click)="paintMatriz(matrizForm.value)">
+                Rellenar
+            </button>
+        </div>
+        <div class="row" formArrayName="roads">
+            <div class="row" *ngFor="let raod of roads.controls; let index = index; let last = last">
+                <mat-form-field>
+                    <mat-label>Ingresar camino</mat-label>
+                    <input matInput type="text" [formControlName]="index">
+                    <mat-error *ngIf="getValidity(index, 'required')">
+                        Campo vacío.
+                    </mat-error>
+                    <mat-error *ngIf="getValidity(index, 'pattern')">
+                        Caracter invalido.
+                    </mat-error>
+                    <mat-hint>. es camino, # es pared</mat-hint>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col" *ngIf="matrizForm.get('roadExist').value">
+            <mat-form-field>
+                <mat-label>Total de saltos</mat-label>
+                <input matInput type="number" formControlName="jumps">
+                <mat-error *ngIf="matrizForm.get('jumps').touched && matrizForm.get('jumps').hasError('required')">
+                    *Campo requerido.
+                </mat-error>
+                <mat-error *ngIf="matrizForm.get('jumps').hasError('min')">
+                    *Tamaño inválido.
+                </mat-error>
+            </mat-form-field>
+            <button mat-raised-button type="button" color="primary" [disabled]="!matrizForm.valid" (click)="fillMatriz(matrizForm.value)">
+                Llenar matriz
+            </button>
+        </div>
+    </form>
+    <div class="row spaceAround" *ngIf="matriz">
+        <div class="col">
+            <div>Matriz</div>
+            <div class="row" *ngFor="let row of matriz">
+                <table>
+                    <tr>
+                        <td *ngFor="let col of row">[{{col === '.' ? ' '+col+' ' : col}}]</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div>¿Puedes llegar al extremo <br>en {{matrizForm.get('jumps').value}} saltos?: {{ans}}</div>
+    </div>
+</div>
